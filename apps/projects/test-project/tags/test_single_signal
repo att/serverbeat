@@ -1,0 +1,10 @@
+type: single
+display_name: Test data for Single Signal
+description: This is a test
+frequency: 60
+tolerance: 30
+sla: 120
+critical_window: 1440
+dependencies:
+    - parent_time_series_signal
+    - another_parent_time_series_signal

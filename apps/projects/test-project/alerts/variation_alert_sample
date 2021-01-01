@@ -1,0 +1,8 @@
+type: variation
+description: in the past 20 snapshots (or fewer if there are fewer) compare each with the previous and alert if the variation in size is more than x%
+
+snapshot_count: 20
+conditions:
+    RED: '>= 10'
+    YELLOW: '>= 5'
+

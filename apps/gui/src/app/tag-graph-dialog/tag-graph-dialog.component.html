@@ -1,0 +1,63 @@
+<div mat-dialog-title style="margin-bottom:0">
+    <div>{{ data.tagDisplayName }}</div>
+    <div style="font-size:small;margin:0">
+        {{ data.serverbeatTag }} ({{ data.serverbeatSubtag }})
+    </div>
+</div>
+<div mat-dialog-content style="font-family:sans-serif;font-size:medium">
+    <div style="font-weight:bold;margin-top:10px">Status:</div>
+    <div>
+        <span [ngStyle]="{ color: data.dataPoint.getColor() }">{{
+            data.dataPoint.getDisplayName()
+        }}</span>
+    </div>
+
+    <div *ngIf="data.dataPoint.isArtificial()">
+        <div style="font-weight:bold;margin-top:10px">
+            Expected signal from the source for date:
+        </div>
+        <div>{{ data.dataPoint.toReadableTimestamp() }}</div>
+        <div style="font-weight:bold;margin-top:10px">
+            {{ data.dataPoint.message }}
+        </div>
+    </div>
+
+    <div *ngIf="data.dataPoint.isMissing()">
+        <div style="font-weight:bold;margin-top:10px">
+            Source reported Missing status for:
+        </div>
+        <div>{{ data.dataPoint.toReadableTimestamp() }}</div>
+        <div style="font-weight:bold;margin-top:10px">Message from server:</div>
+        <pre
+            style="border-radius:3px;padding:5px;font-family:monospace;font-size:small;background-color:#dadada;height:200px;overflow:scroll"
+            >{{ data.dataPoint.message }}</pre
+        >
+    </div>
+
+    <div *ngIf="data.dataPoint.isOk()">
+        <div style="font-weight:bold;margin-top:10px">
+            Server reported OK status for date:
+        </div>
+        <div>{{ data.dataPoint.toReadableTimestamp() }}</div>
+        <div style="font-weight:bold;margin-top:10px">Message from server:</div>
+        <pre
+            style="border-radius:3px;padding:5px;font-family:monospace;font-size:small;background-color:#dadada;height:200px;overflow:scroll"
+            >{{ data.dataPoint.message }}</pre
+        >
+    </div>
+
+    <div *ngIf="data.dataPoint.isNotOk()">
+        <div style="font-weight:bold;margin-top:10px">
+            Server reported Not Ok status for date:
+        </div>
+        <div>{{ data.dataPoint.toReadableTimestamp() }}</div>
+        <div style="font-weight:bold;margin-top:10px">Message from server:</div>
+        <pre
+            style="border-radius:3px;padding:5px;font-family:monospace;font-size:small;background-color:#dadada;height:200px;overflow:scroll"
+            >{{ data.dataPoint.message }}</pre
+        >
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+</div>

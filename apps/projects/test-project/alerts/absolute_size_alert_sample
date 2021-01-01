@@ -1,0 +1,8 @@
+type: absolute_size
+description: for each of the past 10 snapshots (or fewer if there are fewer) alert if the absolute value does not meet the given value
+
+snapshot_count: 10
+conditions:
+    RED: '<= 20000'
+    YELLOW: '<= 5000'
+

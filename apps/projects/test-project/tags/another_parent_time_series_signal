@@ -1,0 +1,28 @@
+type: multi
+display_name: Parent 2 for Time Series Signal
+description: This is a test
+frequency: 60
+tolerance: 30
+sla: 120
+critical_window: 1440
+subtags:
+    - type: time_series
+      subtag: hdfs_partitions
+      display_name: HDFS Partitions
+      is_default: false
+      draw_missing: true
+
+    - type: time_series
+      subtag: hive_partitions
+      display_name: Hive Partitions
+      is_default: true
+      draw_missing: true
+
+    - type: time_series_with_size
+      subtag: hdfs_size
+      display_name: HDFS File Size
+      is_default: false
+      draw_missing: false
+
+dependencies:
+    - grand_parent_time_series_signal

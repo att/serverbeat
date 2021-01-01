@@ -1,0 +1,40 @@
+<mat-tree
+    [dataSource]="dataSource"
+    [treeControl]="treeControl"
+    *ngIf="this.dataSource.data"
+>
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <!-- use a disabled button to provide padding for tree leaf -->
+        <button mat-icon-button disabled></button>
+        <app-traffic-light
+            [alert]="getServerbeatAlert(node.crumbs)"
+            style="margin-right:8px"
+        ></app-traffic-light>
+        <span (click)="goToCrumb(node.crumbs)" style="cursor:pointer">{{
+            node.name
+        }}</span>
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node
+        *matTreeNodeDef="let node; when: hasChild"
+        matTreeNodePadding
+    >
+        <button
+            mat-icon-button
+            matTreeNodeToggle
+            [attr.aria-label]="'toggle ' + node.name"
+        >
+            <i-chevron-right
+                *ngIf="!treeControl.isExpanded(node)"
+            ></i-chevron-right>
+            <i-chevron-down
+                *ngIf="treeControl.isExpanded(node)"
+            ></i-chevron-down>
+        </button>
+        <!--{{node.name}}-->
+        <span (click)="goToCrumb(node.crumbs)" style="cursor:pointer">{{
+            node.name
+        }}</span>
+    </mat-tree-node>
+</mat-tree>

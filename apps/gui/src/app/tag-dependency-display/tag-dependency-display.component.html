@@ -1,0 +1,99 @@
+<div>
+    <h3>Dependency Graph</h3>
+    <div
+        *ngIf="graphReady"
+        style="height:500px;width:990px;border:1px solid #dadada;border-radius:3px"
+    >
+        <!--[view]="view"-->
+        <!--(legendLabelClick)="onLegendLabelClick($event)"-->
+        <!--[scheme]="colorScheme"-->
+        <!--[orientation]="orientation"-->
+        <ngx-graph
+            class="chart-container"
+            [links]="hierarchialGraph.links"
+            [nodes]="hierarchialGraph.nodes"
+            [legend]="false"
+            [curve]="curve"
+            [draggingEnabled]="false"
+            [enableZoom]="true"
+            [autoCenter]="true"
+            [autoZoom]="true"
+            (select)="nodeClicked($event)"
+            orientation="TB"
+        >
+            <ng-template #defsTemplate>
+                <svg:marker
+                    id="arrow"
+                    viewBox="0 -5 10 10"
+                    refX="8"
+                    refY="0"
+                    markerWidth="4"
+                    markerHeight="4"
+                    orient="auto"
+                >
+                    <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+                </svg:marker>
+            </ng-template>
+
+            <ng-template #nodeTemplate let-node>
+                <svg:g
+                    class="node"
+                    ngx-tooltip
+                    [tooltipPlacement]="'top'"
+                    [tooltipType]="'tooltip'"
+                    [tooltipTitle]="node.position"
+                >
+                    <svg:rect
+                        [attr.width]="node.width"
+                        [attr.height]="node.height"
+                        [attr.fill]="node.options.color"
+                    />
+                    <svg:circle
+                        [attr.r]="12"
+                        [attr.cx]="0"
+                        [attr.cy]="0"
+                        [attr.fill]="'black'"
+                    />
+                    <svg:circle
+                        [attr.r]="11"
+                        [attr.cx]="0"
+                        [attr.cy]="0"
+                        [attr.fill]="'#777777'"
+                    />
+                    <svg:circle
+                        [attr.r]="10"
+                        [attr.cx]="0"
+                        [attr.cy]="0"
+                        [attr.fill]="getAlertColor(node.tagsAndSenders[0].tag)"
+                    />
+                    <svg:text
+                        alignment-baseline="central"
+                        [attr.x]="10"
+                        [attr.y]="node.height / 2"
+                    >
+                        &nbsp; {{ node.label }}
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+
+            <ng-template #linkTemplate let-link>
+                <svg:g class="edge">
+                    <svg:path
+                        class="line"
+                        stroke-width="2"
+                        marker-end="url(#arrow)"
+                    ></svg:path>
+                    <svg:text class="edge-label" text-anchor="middle">
+                        <textPath
+                            style="fill: #666;"
+                            [attr.href]="'#' + link.id"
+                            startOffset="60%"
+                        >
+                            {{ link.label }}
+                        </textPath>
+                    </svg:text>
+                </svg:g>
+            </ng-template>
+        </ngx-graph>
+    </div>
+</div>

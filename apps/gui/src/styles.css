@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+.graph_container{
+    display: flex !important;
+}
+.graph_display_container{
+    flex: 1 1 50% !important; 
+    position: relative !important;
+    min-height: 500px;
+}
+.graph_display_container .show_graph{
+    position: absolute !important; 
+    top: 0 !important; 
+    left: 0 !important; 
+    right: 0 !important; 
+    bottom: 0 !important;
+}
+.mat-tab-body-wrapper{
+    width: 1000px !important;
+}

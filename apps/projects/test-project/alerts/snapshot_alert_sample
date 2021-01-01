@@ -1,0 +1,8 @@
+type: snapshot
+description: out of latest (expected) 5 snapshots (or fewer if there are fewer total snapshots) alert if one or more of the conditions for an alert are met.
+
+snapshot_count: 5
+conditions:
+    RED: MISSING|ARTIFICIAL|NOT_OK >= 4
+    YELLOW: MISSING|ARTIFICIAL|NOT_OK >= 1
+

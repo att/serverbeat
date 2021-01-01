@@ -1,0 +1,6 @@
+<span
+    *ngIf="cssColor"
+    [ngStyle]="getTrafficLightStyle()"
+    style="display:inline-block"
+    [matTooltip]="getTooltipMessage()"
+></span>
