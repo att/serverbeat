@@ -1,0 +1,44 @@
+"Uber Project":
+    "Project A":
+        "API Bundle":
+            - sender: server1.example.com
+              tag: test_time_series_signal
+
+            - sender: server1.example.com
+              tag: test_single_signal
+
+            - sender: server1.example.com
+              tag: parent_time_series_signal
+              alerts:
+                  variation_alert_sample: [default]
+                  absolute_size_alert_sample: [default]
+
+            - sender: server1.example.com
+              tag: another_parent_time_series_signal
+              alerts:
+                  snapshot_alert_sample: [hdfs_partitions, hive_partitions]
+                  variation_alert_sample: [hdfs_size]
+                  absolute_size_alert_sample: [hdfs_size]
+
+            - sender: server2.example.com
+              tag: another_parent_time_series_signal
+
+            - sender: server1.example.com
+              tag: grand_parent_time_series_signal
+              alerts:
+                  snapshot_alert_sample: [default]
+
+        "File Processing":
+            - sender: server1.example.com
+              tag: test_time_series_signal
+              alerts:
+                  snapshot_alert_sample: [default]
+
+    DEV:
+        "Project A":
+            "API Layer":
+                - sender: server1.example.com
+                  tag: test_time_series_signal
+                  alerts:
+                      snapshot_alert_sample: [default]
+        

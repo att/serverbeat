@@ -1,0 +1,110 @@
+<div *ngIf="signalTagsAndSenders && tagsToSendersAndAlerts">
+    <div (click)="backToProjectTree()" style="cursor:pointer;margin-bottom:5px;margin-top:5px;color:#777777">
+        <span *ngFor="let crumb of crumbs; let last = last">
+            {{ crumb }} <span *ngIf="!last"> &gt; </span>
+        </span>
+        <span *ngIf="signalTagsAndSendersFilter.length">
+            <span> &gt; </span> {{ signalTagsAndSendersFilter[0].tag }}
+        </span>
+    </div>
+    <div style="margin-top:10px" *ngIf="signalTagsAndSendersFilter.length !== 0">
+        <button mat-raised-button (click)="backToGraph()">Back</button>
+    </div>
+    <div *ngIf="signalTagsAndSendersFilter.length !== 0">
+        <div *ngFor="let info of signalTagsAndSendersFilter">
+            <app-tag-graph [signalTag]="info.tag" [signalSender]="info.sender" style="display:block">
+            </app-tag-graph>
+        </div>
+    </div>
+    <mat-tab-group dynamicHeight *ngIf="signalTagsAndSendersFilter.length === 0" [selectedIndex]='tabViews.indexOf(defaultView)'>
+        <mat-tab label="table" *ngIf="availableViews.includes('table')">
+            <ng-template matTabContent>
+                <table mat-table [dataSource]="tags" style="width:100%">
+                    <ng-container matColumnDef="tag">
+                        <th mat-header-cell *matHeaderCellDef>Serverbeat Tag</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{
+                                tagGraphService.getSignalConfig(element)
+                                    .signalDisplayName
+                            }}
+                            ({{ element }})
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="senders">
+                        <th mat-header-cell *matHeaderCellDef># of senders</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ tagsToSendersAndAlerts[element].senders.length }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let element">
+                            <app-traffic-light [alert]="tagGraphService.getTagAlert(crumbs, element)">
+                            </app-traffic-light>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="sla">
+                        <th mat-header-cell *matHeaderCellDef>SLA</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ humanizeSla(element) }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="See timeline">
+                        <th mat-header-cell *matHeaderCellDef>See timeline</th>
+                        <td mat-cell *matCellDef="let element" style="color:blue;cursor:pointer"
+                            (click)="openTagWindow(element)">
+                            Go!
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="detailed" *ngIf="availableViews.includes('detailed')">
+            <ng-template matTabContent>
+                <span style="margin-right:10px">
+                    Jump to a subsection for all:
+                </span>
+                <mat-form-field>
+                    <mat-select [(value)]="selectedGlobalSubsection">
+                        <mat-option *ngFor="let item of (globalSubtags | keyvalue)" [value]="item.key">
+                            {{ item.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-raised-button style="margin-left:10px;font-size:small"
+                    [disabled]="!selectedGlobalSubsection" (click)="goToSubsectionGlobal()">
+                    Go!
+                </button>
+                <div style="display:inline-block">
+                    <mat-checkbox style="margin-left:30px" [(ngModel)]="trafficLightFilter[0]"
+                        matTooltip="Show timelines for green alerts">Show greens</mat-checkbox>
+                    <mat-checkbox style="margin-left:10px" [(ngModel)]="trafficLightFilter[1]"
+                        matTooltip="Show timelines for yellow alerts">Show yellows</mat-checkbox>
+                    <mat-checkbox style="margin-left:10px" [(ngModel)]="trafficLightFilter[2]"
+                        matTooltip="Show timelines for red alerts">Show reds</mat-checkbox>
+                    <mat-checkbox style="margin-left:10px" [(ngModel)]="trafficLightFilter[-1]"
+                        matTooltip="Show timelines for green alerts">Show grays</mat-checkbox>
+                </div>
+                <div *ngFor="let info of signalTagsAndSenders">
+                    <app-tag-graph *ngIf="matchedColorFilter(info.tag)" [signalTag]="info.tag"
+                        [signalSender]="info.sender" style="display:block">
+                    </app-tag-graph>
+                </div>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="graph" *ngIf="availableViews.includes('graph')">
+            <ng-template matTabContent>
+                <div class="graph_container">
+                    <div class="graph_display_container">
+                        <div class="show_graph">
+                            <app-tag-dependency-display
+                                [tagsAndSenders]="signalTagsAndSenders"></app-tag-dependency-display>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>      
+        </mat-tab>
+    </mat-tab-group>
+</div>
